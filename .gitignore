@@ -19,3 +19,9 @@ Thumbs.db
 
 # Various text editor swap files, etc.
 .*.swp
+
+# VS Code 
+.vscode
+
+# Allure
+.allure
