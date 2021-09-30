@@ -9,10 +9,10 @@ pipeline {
       steps {
         echo 'Build Java project'
 	
-	configFileProvider(
-		[configFile(fileId: 'Telia_maven_settings', variable: 'MAVEN_SETTINGS')]){
-        	sh ' mvn -s $MAVEN_SETTINGS clean test'
-	}
+        configFileProvider(
+          [configFile(fileId: 'Telia_maven_settings', variable: 'MAVEN_SETTINGS')]){
+                sh ' mvn -s $MAVEN_SETTINGS clean test'
+        }
       }
       post {
         success {
