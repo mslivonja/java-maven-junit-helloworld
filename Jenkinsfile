@@ -25,6 +25,11 @@ pipeline {
       }
     }
     stage('Generate Allure reports') {
+      agent {
+        docker {
+          image 'etk/allure:2.15.0-telia'
+        }
+      }
       steps {
         unstash 'app-build'
         script {
