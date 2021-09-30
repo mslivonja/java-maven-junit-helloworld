@@ -30,6 +30,9 @@ pipeline {
           image 'etk/allure:2.15.0-telia'
         }
       }
+      options{
+        skipDefaultCheckout()
+      }
       steps {
         unstash 'app-build'
         script {
