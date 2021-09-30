@@ -20,7 +20,7 @@ pipeline {
         success {
           unstash 'app-build'
           sh 'ls -la target/surefire-reports/*.xml'
-          junit 'target/surfire-reports/**/*.xml'
+          junit 'target/surefire-reports/**/*.xml'
         }
       }
     }
