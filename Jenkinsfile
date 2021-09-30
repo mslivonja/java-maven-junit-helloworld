@@ -24,5 +24,19 @@ pipeline {
         }
       }
     }
+    stage('Generate Allure reports') {
+      steps {
+        unstash 'app-build'
+        script {
+                allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'target/allure-results']]
+                ])
+        }
+      }
+    }
   }
 }
