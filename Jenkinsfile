@@ -14,9 +14,11 @@ pipeline {
           [configFile(fileId: 'Telia_maven_settings', variable: 'MAVEN_SETTINGS')]){
                 sh ' mvn -s $MAVEN_SETTINGS clean test'
         }
+        stash includes: 'target/**', name: 'app-build'
       }
       post {
         success {
+          unstash 'app-build'
           junit 'target/surfire-reports/**/*.xml'
         }
       }
