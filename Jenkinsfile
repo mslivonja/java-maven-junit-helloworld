@@ -1,12 +1,26 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:latest'
-      args '-v $HOME/.m2:/root/.m2'
-    }
+  agent none
+  options{
+    skipDefaultCheckout true
   }
   stages {
+    stage('Init') {
+      agent any
+      steps {
+        echo 'Initialization stage'
+        // echo "Clean workspace ${WORKSPACE}"
+        // cleanWs()
+        echo "Checkout SCM"
+        checkout scm
+      }
+    }
     stage('Build') {
+      agent {
+        docker {
+          image 'maven:latest'
+          args '-v $HOME/.m2:/root/.m2'
+        }
+      }
       steps {
         echo 'Build Java project'
 	
@@ -18,31 +32,25 @@ pipeline {
       }
       post {
         success {
-          unstash 'app-build'
           sh 'ls -la target/surefire-reports/*.xml'
+          // Generate JUnit reports
           junit 'target/surefire-reports/**/*.xml'
         }
       }
     }
     stage('Generate Allure reports') {
-      agent {
-        docker {
-          image 'etk/allure:2.15.0-telia'
-        }
-      }
-      options{
-        skipDefaultCheckout()
-      }
+      agent any
       steps {
+        // Generate Allure reports
         unstash 'app-build'
         script {
-                allure([
-                        includeProperties: false,
-                        jdk: '',
-                        properties: [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'target/allure-results']]
-                ])
+              allure([
+                      includeProperties: false,
+                      jdk: '',
+                      properties: [],
+                      reportBuildPolicy: 'ALWAYS',
+                      results: [[path: 'target/allure-results']]
+              ])
         }
       }
     }
