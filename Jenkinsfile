@@ -62,7 +62,7 @@ pipeline {
           subject: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' status",
           body: """<p>Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' finished succesfully:</p>
             <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-          to: "matija.slivonja@ericsson.com"
+          to: "${env.JENKINS_ADMIN_MAIL_LIST}"
         )
     }
   }
